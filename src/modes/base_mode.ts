@@ -146,10 +146,6 @@ export abstract class BaseMode {
         if (vsItem.textEdit) {
             entry.insertText = vsItem.textEdit.newText;
             entry.replacementSpan = this.toTsSpan(context, vsItem.textEdit.range);
-
-            if (entry.insertText.includes('$')) {
-                entry.kind = typescript.ScriptElementKind.memberFunctionElement;
-            }
         }
 
         return entry;

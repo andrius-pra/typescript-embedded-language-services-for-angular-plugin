@@ -4,8 +4,7 @@ import { LanguageService as HTMLLanguageService } from 'vscode-html-languageserv
 import { getEmmetCompletionParticipants } from 'vscode-emmet-helper';
 import { TemplateContext } from '../typescript-template-language-service-decorator';
 import * as ts from 'typescript/lib/tsserverlibrary';
-import { HtmlCachedCompletionList, CompletionsCache } from '../completions_cache';
-import { FoldingRange } from 'vscode-languageserver-types';
+import { HtmlCachedCompletionList } from '../completions_cache';
 import { BaseMode } from './base_mode';
 
 export class HtmlMode extends BaseMode {

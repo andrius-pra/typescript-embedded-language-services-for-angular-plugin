@@ -199,6 +199,12 @@ export default class StandardTemplateSourceHelper implements TemplateSourceHelpe
                 return undefined;
 
             case this.typescript.SyntaxKind.NoSubstitutionTemplateLiteral:
+                if (templateStringSettings.IsTemplateLiteral &&
+                    templateStringSettings.IsTemplateLiteral(this.typescript, node as ts.NoSubstitutionTemplateLiteral)
+                ) {
+                    return node as ts.NoSubstitutionTemplateLiteral;
+                }
+
                 if (isTaggedLiteral(this.typescript, node as ts.NoSubstitutionTemplateLiteral, templateStringSettings.tags)) {
                     return node as ts.NoSubstitutionTemplateLiteral;
                 }

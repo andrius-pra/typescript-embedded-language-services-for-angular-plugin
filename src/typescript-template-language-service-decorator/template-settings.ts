@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 // tslint:disable
 
+import * as ts from 'typescript/lib/tsserverlibrary';
 /**
  * Define which tagged templates to process and how to parse them.
  */
@@ -49,4 +50,9 @@ export default interface TemplateSettings {
         templateString: string,
         spans: ReadonlyArray<{ start: number, end: number }>
     ): string;
+
+    IsTemplateLiteral?(
+        typescript: typeof ts,
+        node: ts.NoSubstitutionTemplateLiteral,
+    ):boolean
 }

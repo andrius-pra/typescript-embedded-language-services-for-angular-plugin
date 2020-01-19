@@ -7,7 +7,10 @@ import { getLanguageService } from 'vscode-html-languageservice';
 import { getCSSLanguageService } from 'vscode-css-languageservice';
 import { LanguageService } from './language_service';
 import { VirtualDocumentProvider } from './virtual_document_provider';
-import { decorateWithTemplateLanguageService, TemplateSettings } from './typescript-template-language-service-decorator';
+import {
+    decorateWithTemplateLanguageService,
+    TemplateSettings,
+} from './typescript-template-language-service-decorator';
 import { LanguageServiceLogger } from './language_service_logger';
 
 const pluginSymbol = Symbol('__typescript-angular-embedded-service-plugin__');
@@ -56,6 +59,17 @@ export class TypescriptPlugin {
             enableForStringWithSubstitutions: false,
             getSubstitution: undefined,
             getSubstitutions: undefined,
+            IsTemplateLiteral: (typescript, node) => {
+                if (typescript.isPropertyAssignment(node.parent) && node.parent.name.getText() === 'template') {
+                    return true;
+                }
+                if (typescript.isArrayLiteralExpression(node.parent) &&
+                    typescript.isPropertyAssignment(node.parent.parent) &&
+                    node.parent.parent.name.getText() === 'styles') {
+                    return true;
+                }
+                return false;
+            },
         };
     }
 }

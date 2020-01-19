@@ -9,7 +9,7 @@
 		"noImplicitThis": true,
 		"alwaysStrict": true,
 		"experimentalDecorators": true,
-		"declaration": true
+		"declaration": false
 	},
 	"include": [
 		"src/**/*.ts"
