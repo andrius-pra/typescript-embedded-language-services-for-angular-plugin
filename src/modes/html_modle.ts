@@ -88,7 +88,8 @@ export class HtmlMode extends BaseMode {
         const completionList = this.htmlLanguageService.doComplete(document, position, htmlDocument, options);
 
         if (emmetResults.items.length) {
-            emmetResults.isIncomplete = true;
+            // This list is not complete. Further typing should result in recomputing this list.
+            completionList.isIncomplete = true;
             completionList.items.push(...emmetResults.items);
         }
         const htmlCompletions: HtmlCachedCompletionList = {

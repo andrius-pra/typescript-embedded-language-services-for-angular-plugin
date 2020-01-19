@@ -1,7 +1,7 @@
 import { HTMLFormatConfiguration } from 'vscode-html-languageservice';
 
 export class Configuration {
-    public hideAutoCompleteProposals = true;
+    public hideAutoCompleteProposals = false;
     public suggestHtml5 = true;
     public htmlFormat: HTMLFormatConfiguration = {
         contentUnformatted: 'pre,code,textarea',
