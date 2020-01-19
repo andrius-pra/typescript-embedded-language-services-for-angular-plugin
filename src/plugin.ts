@@ -7,7 +7,7 @@ import { getLanguageService } from 'vscode-html-languageservice';
 import { getCSSLanguageService } from 'vscode-css-languageservice';
 import { LanguageService } from './language_service';
 import { VirtualDocumentProvider } from './virtual_document_provider';
-import { decorateWithTemplateLanguageService, TemplateSettings } from 'typescript-template-language-service-decorator';
+import { decorateWithTemplateLanguageService, TemplateSettings } from './typescript-template-language-service-decorator';
 import { LanguageServiceLogger } from './language_service_logger';
 
 const pluginSymbol = Symbol('__typescript-angular-embedded-service-plugin__');

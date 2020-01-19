@@ -2,7 +2,7 @@ import * as vscode from 'vscode-languageserver-types';
 import { Configuration } from '../configuration';
 import { LanguageService as CssLanguageService } from 'vscode-css-languageservice';
 import { getEmmetCompletionParticipants } from 'vscode-emmet-helper';
-import { TemplateContext } from 'typescript-template-language-service-decorator';
+import { TemplateContext } from '../typescript-template-language-service-decorator';
 import * as ts from 'typescript/lib/tsserverlibrary';
 import { HtmlCachedCompletionList } from '../completions_cache';
 import { BaseMode } from './base_mode';

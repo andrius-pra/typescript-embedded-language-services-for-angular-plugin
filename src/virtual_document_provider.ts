@@ -1,7 +1,7 @@
 // Licensed under the MIT License.
 // Original code forked from https://github.com/microsoft/typescript-lit-html-plugin
 
-import { TemplateContext } from 'typescript-template-language-service-decorator';
+import { TemplateContext } from './typescript-template-language-service-decorator';
 import * as vscode from 'vscode-languageserver-types';
 
 export class VirtualDocumentProvider {

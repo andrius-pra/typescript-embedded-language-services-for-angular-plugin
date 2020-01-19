@@ -3,7 +3,7 @@ import { Configuration } from './configuration';
 import { LanguageService as HtmlLanguageService } from 'vscode-html-languageservice';
 import { LanguageService as CssLanguageService } from 'vscode-css-languageservice';
 import { VirtualDocumentProvider } from './virtual_document_provider';
-import { TemplateLanguageService, TemplateContext } from 'typescript-template-language-service-decorator';
+import { TemplateLanguageService, TemplateContext } from './typescript-template-language-service-decorator';
 import * as vscode from 'vscode-languageserver-types';
 import { CompletionsCache } from './completions_cache';
 import { HtmlMode } from './modes/html_modle';

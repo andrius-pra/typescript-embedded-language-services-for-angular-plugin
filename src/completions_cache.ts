@@ -1,4 +1,4 @@
-import { TemplateContext } from 'typescript-template-language-service-decorator';
+import { TemplateContext } from './typescript-template-language-service-decorator';
 import * as vscode from 'vscode-languageserver-types';
 import * as ts from 'typescript/lib/tsserverlibrary';
 
