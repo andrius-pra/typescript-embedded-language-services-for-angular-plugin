@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schemastore.azurewebsites.net/schemas/json/tslint.json",
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "rules": {
+        "indent": [
+            true,
+            "spaces"
+        ],
+        "interface-name": [
+            true,
+            "never-prefix"
+        ],
+        "variable-name": [
+            true,
+            "check-format",
+            "allow-leading-underscore"
+        ],
+        "curly": [
+            true,
+            "ignore-same-line"
+        ],
+        "member-access": [
+            true
+        ],
+        "object-literal-sort-keys": false,
+        "quotemark": [
+            true,
+            "single"
+        ],
+        "ordered-imports": false,
+        "arrow-parens": [
+            true,
+            "ban-single-arg-parens"
+        ]
+    }
+}

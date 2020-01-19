@@ -1,0 +1,57 @@
+{
+  "name": "typescript-embedded-language-services-for-angular-plugin",
+  "version": "0.0.1",
+  "description": "TypeScript language service plugin that adds IntelliSense for html and css in angular component decorators",
+  "keywords": [
+    "TypeScript",
+    "html",
+    "angular",
+    "emmet"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "author": "Andrius",
+  "license": "MIT",
+  "categories": [],
+  "publisher": "andrius-pra",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andrius-pra/typescript-embedded-language-services-for-angular-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andrius-pra/typescript-embedded-language-services-for-angular-plugin/issues"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "typescript-template-language-service-decorator": "^2.2.0",
+    "vscode-html-languageservice": "^2.1.10",
+    "vscode-css-languageservice": "^4.0.2",
+    "vscode-languageserver-types": "^3.13.0",
+    "vscode-emmet-helper": "^1.2.17"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.4",
+    "@types/node": "^13.1.8",
+    "ts-loader": "^6.0.4",
+    "tslint": "^5.16.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.6"
+  },
+  "peerDependencies": {
+    "typescript-template-language-service-decorator": "^2.2.0",
+    "vscode-html-languageservice": "^2.1.10",
+    "vscode-css-languageservice": "^4.0.2",
+    "vscode-languageserver-types": "^3.13.0",
+    "vscode-emmet-helper": "^1.2.17"
+  },
+  "scripts": {
+    "vscode:prepublish": "webpack --mode production",
+    "webpack": "webpack --mode development",
+    "webpack-dev": "webpack --mode development --watch",
+    "test-compile": "tsc -p ./",
+    "lint": "tslint -p ./",
+    "prepack": "webpack --mode production"
+  }
+}
