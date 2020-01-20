@@ -2,7 +2,7 @@ import * as vscode from 'vscode-languageserver-types';
 import { Configuration } from '../configuration';
 import { TemplateContext } from '../typescript-template-language-service-decorator';
 import * as ts from 'typescript/lib/tsserverlibrary';
-import { CompletionsCache } from '../completions_cache';
+import { CompletionsCache, HtmlCachedCompletionList } from '../completions_cache';
 import { FoldingRange } from 'vscode-languageserver-types';
 
 export abstract class BaseMode {
@@ -36,6 +36,21 @@ export abstract class BaseMode {
         document: vscode.TextDocument,
         context: TemplateContext,
     ): ts.OutliningSpan[];
+
+    public abstract getFormattingEditsForRange(
+        document: vscode.TextDocument,
+        context: TemplateContext,
+        start: number,
+        end: number,
+        settings: ts.EditorSettings,
+        configuration: Configuration,
+    ): ts.TextChange[];
+
+    public abstract getSemanticDiagnostics(
+        document: vscode.TextDocument,
+        context: TemplateContext,
+        configuration: Configuration,
+    ): ts.Diagnostic[];
 
     protected translateHover(
         hover: vscode.Hover,
@@ -205,4 +220,88 @@ export abstract class BaseMode {
             length: editEnd - editStart,
         };
     }
+
+    protected toVsRange(
+        context: TemplateContext,
+        start: number,
+        end: number,
+    ): vscode.Range {
+        return {
+            start: context.toPosition(start),
+            end: context.toPosition(end),
+        };
+    }
+
+    protected toTsTextChange(
+        context: TemplateContext,
+        vsedit: vscode.TextEdit,
+    ) {
+        return {
+            span: this.toTsSpan(context, vsedit.range),
+            newText: vsedit.newText,
+        };
+    }
+
+    protected translateSeverity(
+        typescript: typeof ts,
+        severity: vscode.DiagnosticSeverity | undefined,
+    ): ts.DiagnosticCategory {
+        switch (severity) {
+            case vscode.DiagnosticSeverity.Information:
+            case vscode.DiagnosticSeverity.Hint:
+                return typescript.DiagnosticCategory.Message;
+
+            case vscode.DiagnosticSeverity.Warning:
+                return typescript.DiagnosticCategory.Warning;
+
+            case vscode.DiagnosticSeverity.Error:
+            default:
+                return typescript.DiagnosticCategory.Error;
+        }
+    }
+
+    protected translateDiagnostics(
+        diagnostics: vscode.Diagnostic[],
+        doc: vscode.TextDocument,
+        context: TemplateContext,
+        content: string,
+        configuration: Configuration,
+        errorCode: number,
+    ) {
+        const sourceFile = context.node.getSourceFile();
+        return diagnostics.map(diag =>
+            this.translateDiagnostic(diag, sourceFile, doc, context, content, configuration, errorCode));
+    }
+
+    protected translateDiagnostic(
+        diagnostic: vscode.Diagnostic,
+        file: ts.SourceFile,
+        doc: vscode.TextDocument,
+        context: TemplateContext,
+        content: string,
+        configuration: Configuration,
+        errorCode: number,
+    ): ts.Diagnostic | undefined {
+        // Make sure returned error is within the real document
+        if (diagnostic.range.start.line === 0
+            || diagnostic.range.start.line > doc.lineCount
+            || diagnostic.range.start.character >= content.length
+        ) {
+            return undefined;
+        }
+
+        const start = context.toOffset(diagnostic.range.start);
+        const length = context.toOffset(diagnostic.range.end) - start;
+        const code = typeof diagnostic.code === 'number' ? diagnostic.code : errorCode;
+        return {
+            code,
+            messageText: diagnostic.message,
+            category: this.translateSeverity(this.typescript, diagnostic.severity),
+            file,
+            start,
+            length,
+            source: configuration.pluginName,
+        };
+    }
+
 }

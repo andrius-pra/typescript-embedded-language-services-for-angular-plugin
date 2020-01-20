@@ -1,6 +1,6 @@
 {
   "name": "typescript-embedded-language-services-for-angular-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "TypeScript language service plugin that adds IntelliSense for html and css in angular component decorators",
   "keywords": [
     "TypeScript",
@@ -37,12 +37,6 @@
     "tslint": "^5.16.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.6"
-  },
-  "peerDependencies": {
-    "vscode-html-languageservice": "^2.1.10",
-    "vscode-css-languageservice": "^4.0.2",
-    "vscode-languageserver-types": "^3.13.0",
-    "vscode-emmet-helper": "^1.2.17"
   },
   "scripts": {
     "vscode:prepublish": "webpack --mode production",

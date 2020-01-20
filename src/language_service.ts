@@ -81,7 +81,9 @@ export class LanguageService implements TemplateLanguageService {
     public getSemanticDiagnostics(
         context: TemplateContext,
     ): ts.Diagnostic[] {
-        return [];
+        const document = this.virtualDocumentProvider.createVirtualDocument(context);
+        const mode = this.getMode(document.languageId);
+        return mode.getSemanticDiagnostics(document, context, this.configuration);
     }
 
     public getFormattingEditsForRange(
@@ -90,7 +92,9 @@ export class LanguageService implements TemplateLanguageService {
         end: number,
         settings: ts.EditorSettings,
     ): ts.TextChange[] {
-        return [];
+        const document = this.virtualDocumentProvider.createVirtualDocument(context);
+        const mode = this.getMode(document.languageId);
+        return mode.getFormattingEditsForRange(document, context, start, end, settings, this.configuration);
     }
 
     public getSupportedCodeFixes(): number[] {

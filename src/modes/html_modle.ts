@@ -1,6 +1,6 @@
 import * as vscode from 'vscode-languageserver-types';
 import { Configuration } from '../configuration';
-import { LanguageService as HTMLLanguageService } from 'vscode-html-languageservice';
+import { LanguageService as HTMLLanguageService, CompletionConfiguration } from 'vscode-html-languageservice';
 import { getEmmetCompletionParticipants } from 'vscode-emmet-helper';
 import { TemplateContext } from '../typescript-template-language-service-decorator';
 import * as ts from 'typescript/lib/tsserverlibrary';
@@ -66,6 +66,54 @@ export class HtmlMode extends BaseMode {
         return ranges.map(range => this.translateOutliningSpan(context, range));
     }
 
+    public getFormattingEditsForRange(
+        document: vscode.TextDocument,
+        context: TemplateContext,
+        start: number,
+        end: number,
+        settings: ts.EditorSettings,
+        configuration: Configuration,
+    ): ts.TextChange[] {
+        if (!configuration?.html?.format?.enable) {
+            return [];
+        }
+
+        let startPosition = start;
+        let endPosition = end;
+
+        // Make sure we don't get rid of leading newline
+        const leading = context.text.match(/^\s*\n/);
+        if (leading) {
+            startPosition += leading[0].length;
+        }
+        // or any trailing newlines
+        const trailing = context.text.match(/\n\s*$/);
+        if (trailing) {
+            endPosition -= trailing[0].length;
+        }
+
+        if (endPosition <= startPosition) {
+            return [];
+        }
+
+        const range = this.toVsRange(context, startPosition, endPosition);
+        const edits = this.htmlLanguageService.format(document, range, {
+            ...configuration.html.format,
+            tabSize: settings.tabSize,
+            insertSpaces: !!settings.convertTabsToSpaces,
+        });
+
+        return edits.map(vsedit => this.toTsTextChange(context, vsedit));
+    }
+
+    public getSemanticDiagnostics(
+        document: vscode.TextDocument,
+        context: TemplateContext,
+        configuration: Configuration,
+    ): ts.Diagnostic[] {
+        return [];
+    }
+
     private getCompletionItems(
         document: vscode.TextDocument,
         context: TemplateContext,
@@ -76,9 +124,9 @@ export class HtmlMode extends BaseMode {
         if (cached) {
             return cached;
         }
-        const options = {
-            hideAutoCompleteProposals: configuration.hideAutoCompleteProposals,
-            html5: configuration.suggestHtml5,
+        const options: CompletionConfiguration = {
+            hideAutoCompleteProposals: configuration.html.autoClosingTags,
+            html5: configuration.html.suggest.html5,
         };
         const emmetResults: vscode.CompletionList = { isIncomplete: true, items: [] };
         const participants = [getEmmetCompletionParticipants(document, position, 'html', {}, emmetResults)];

@@ -30,7 +30,7 @@ export class TypescriptPlugin {
             return info.languageService;
         }
 
-        this._config.update(info.config);
+        this.onConfigurationChanged(info.config);
 
         const htmlTemplateLanguageService = new LanguageService(
             this._typescript,
@@ -48,6 +48,11 @@ export class TypescriptPlugin {
             this.getTemplateSettings(this._config, this._virtualDocumentProvider),
             { logger });
         return languageService;
+    }
+
+    public onConfigurationChanged(config: any) {
+        this._config.update(config);
+        this._cssLanguageService.configure(this._config.css);
     }
 
     private getTemplateSettings(

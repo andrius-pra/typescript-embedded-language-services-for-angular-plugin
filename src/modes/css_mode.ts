@@ -48,6 +48,20 @@ export class CssMode extends BaseMode {
         return this.translateCompletionItemsToCompletionEntryDetails(this.typescript, item);
     }
 
+    public getSemanticDiagnostics(
+        document: vscode.TextDocument,
+        context: TemplateContext,
+        configuration: Configuration,
+    ): ts.Diagnostic[] {
+        const stylesheet = this.cssLanguageService.parseStylesheet(document);
+        return this.translateDiagnostics(
+            this.cssLanguageService.doValidation(document, stylesheet, configuration.css),
+            document,
+            context,
+            context.text,
+            configuration, 9988).filter(x => !!x) as ts.Diagnostic[];
+    }
+
     public getQuickInfoAtPosition(
         document: vscode.TextDocument,
         context: TemplateContext,
@@ -64,6 +78,18 @@ export class CssMode extends BaseMode {
     ): ts.OutliningSpan[] {
         const ranges = this.cssLanguageService.getFoldingRanges(document);
         return ranges.map(range => this.translateOutliningSpan(context, range));
+    }
+
+    public getFormattingEditsForRange(
+        document: vscode.TextDocument,
+        context: TemplateContext,
+        start: number,
+        end: number,
+        settings: ts.EditorSettings,
+        configuration: Configuration,
+    ): ts.TextChange[] {
+
+        return [];
     }
 
     private getCompletionItems(

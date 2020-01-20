@@ -60,6 +60,25 @@ export class UnknowMode extends BaseMode {
         return [];
     }
 
+    public getFormattingEditsForRange(
+        document: vscode.TextDocument,
+        context: TemplateContext,
+        start: number,
+        end: number,
+        settings: ts.EditorSettings,
+        configuration: Configuration,
+    ): ts.TextChange[]{
+        return [];
+    }
+
+    public getSemanticDiagnostics(
+        document: vscode.TextDocument,
+        context: TemplateContext,
+        configuration: Configuration,
+    ): ts.Diagnostic[] {
+        return [];
+    }
+
     private getCompletionItems(
         document: vscode.TextDocument,
         context: TemplateContext,
